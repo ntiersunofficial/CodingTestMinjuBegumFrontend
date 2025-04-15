@@ -1,0 +1,126 @@
+<div class="bg-light dark:bg-transparent min-vh-100 d-flex flex-row align-items-center" *ngIf="!showThankYou; else thankYouTemplate">
+  <c-container>
+    <c-row class="justify-content-center">
+      <c-col lg="7" md="9" xl="6">
+        <c-card class="mx-4">
+          <c-card-body class="p-4">
+            <form cForm [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+              <h1>Register</h1>
+              <p class="text-body-secondary">Create your account</p>
+
+              <!-- Error Message -->
+              <div *ngIf="errorMessage" class="alert alert-danger mb-3">
+                {{ errorMessage }}
+              </div>
+
+              <!-- Full Name -->
+              <c-input-group class="mb-3">
+                <span cInputGroupText>
+                  <svg cIcon name="cilUser"></svg>
+                </span>
+                <input formControlName="fullName" autoComplete="name" cFormControl placeholder="Full Name" />
+              </c-input-group>
+              <div *ngIf="f['fullName'].touched && f['fullName'].errors" class="text-danger small mb-2">
+                <div *ngIf="f['fullName'].errors['required']">Full name is required</div>
+                <div *ngIf="f['fullName'].errors['minlength']">Must be at least 3 characters</div>
+                <div *ngIf="f['fullName'].errors['maxlength']">Cannot exceed 50 characters</div>
+              </div>
+
+              <!-- Email -->
+              <c-input-group class="mb-3">
+                <span cInputGroupText>&#64;</span>
+                <input formControlName="email" autoComplete="email" cFormControl placeholder="Email" />
+              </c-input-group>
+              <div *ngIf="f['email'].touched && f['email'].errors" class="text-danger small mb-2">
+                <div *ngIf="f['email'].errors['required']">Email is required</div>
+                <div *ngIf="f['email'].errors['email']">Please enter a valid email</div>
+              </div>
+
+              <!-- Phone Number -->
+              <c-input-group class="mb-3">
+                <span cInputGroupText>
+                  <svg cIcon name="cilPhone"></svg>
+                </span>
+                <input formControlName="phone" autoComplete="tel" cFormControl placeholder="Phone Number" />
+              </c-input-group>
+              <div *ngIf="f['phone'].touched && f['phone'].errors" class="text-danger small mb-2">
+                <div *ngIf="f['phone'].errors['required']">Phone number is required</div>
+                <div *ngIf="f['phone'].errors['pattern']">Please enter a valid phone number (10-15 digits)</div>
+              </div>
+
+              <!-- Password -->
+              <c-input-group class="mb-3">
+                <span cInputGroupText>
+                  <svg cIcon name="cilLockLocked"></svg>
+                </span>
+                <input formControlName="password" autoComplete="new-password" cFormControl placeholder="Password" type="password" />
+              </c-input-group>
+              <div *ngIf="f['password'].touched && f['password'].errors" class="text-danger small mb-2">
+                <div *ngIf="f['password'].errors['required']">Password is required</div>
+                <div *ngIf="f['password'].errors['minlength']">Must be at least 8 characters</div>
+                <div *ngIf="f['password'].errors['weakPassword']">Password strength must be 75 or higher</div>
+              </div>
+              
+              <!-- Password Strength Meter -->
+              <div class="mb-3">
+                <div class="d-flex justify-content-between mb-1">
+                  <small>Password Strength</small>
+                  <small>{{ passwordScore }}/100</small>
+                </div>
+                <div #chartContainer style="height: 300px; width: 100%;"></div>
+              </div>
+
+              <!-- Confirm Password -->
+              <c-input-group class="mb-4">
+                <span cInputGroupText>
+                  <svg cIcon name="cilLockLocked"></svg>
+                </span>
+                <input formControlName="confirmPassword" autoComplete="new-password" cFormControl placeholder="Repeat password" type="password" />
+              </c-input-group>
+              <div *ngIf="f['confirmPassword'].touched && f['confirmPassword'].errors" class="text-danger small mb-2">
+                <div *ngIf="f['confirmPassword'].errors['required']">Please confirm your password</div>
+              </div>
+              <div *ngIf="registrationForm.errors?.['passwordMismatch'] && f['confirmPassword'].touched" class="text-danger small mb-2">
+                Passwords do not match
+              </div>
+
+              <div class="d-grid">
+                <button 
+                  type="submit"
+                  cButton 
+                  color="success" 
+                  [disabled]="registrationForm.invalid || isLoading"
+                >
+                  <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  {{ isLoading ? 'Processing...' : 'Create Account' }}
+                </button>
+              </div>
+            </form>
+          </c-card-body>
+        </c-card>
+      </c-col>
+    </c-row>
+  </c-container>
+</div>
+
+<ng-template #thankYouTemplate>
+  <div class="bg-light dark:bg-transparent min-vh-100 d-flex flex-row align-items-center">
+    <c-container>
+      <c-row class="justify-content-center">
+        <c-col lg="7" md="9" xl="6">
+          <c-card class="mx-4">
+            <c-card-body class="p-4 text-center">
+              <h1 class="text-success mb-4">Registration Complete!</h1>
+              <p class="lead">Thank you for registering!</p>
+              <p>Your registration process is complete. Our admin team will review your application and approve your account soon.</p>
+              <p>You'll receive an email notification once your account is approved.</p>
+              <button cButton color="primary" (click)="goToLogin()" class="mt-4">
+                Go to Login Page
+              </button>
+            </c-card-body>
+          </c-card>
+        </c-col>
+      </c-row>
+    </c-container>
+  </div>
+</ng-template>

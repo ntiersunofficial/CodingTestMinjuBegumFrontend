@@ -1,0 +1,78 @@
+<!-- <button cButton color="primary" class="mb-2"></button> -->
+<button
+  (click)="creatUser()"
+  type="button"
+  class="btn btn-primary mb-2"
+  tooltip="Create New User"
+>
+  Create New User
+</button>
+
+<c-card class="mb-4">
+  <c-card-header>
+    <!-- Advanced Filters
+    <span class="right-floated-link-button"><a>Hide Advanced Filters</a></span> -->
+  </c-card-header>
+  <c-card-body>
+    <c-row>
+      <c-col xs="12">
+        <table
+          [hover]="true"
+          [responsive]="true"
+          [striped]="true"
+          align="middle"
+          cTable
+          class="mb-0 border"
+        >
+          <thead cTableColor="light">
+            <tr>
+              <th>#</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Mobile</th>
+              <th>Is Active</th>
+              <th class="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let single of allUsers; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ single.firstName }}</td>
+              <td>{{ single.lastName }}</td>
+              <td>{{ single.userId }}</td>
+              <td>{{ single.email }}</td>
+              <td>{{ single.mobile }}</td>
+              <td>{{ single.isActive ? "Yes" : "No" }}</td>
+              <td class="text-center ">
+                <p-button
+                  (click)="editUser(single)"
+                  icon="pi pi-pencil" [style]="{ marginRight: '4px', fontSize: '.25rem'}"
+                  [text]="true" size="small"
+                ></p-button>
+                <p-button
+                  (click)="deleteUser(single)"
+                  icon="pi pi-trash"
+                  severity="danger"
+                  [style]="{ fontSize: '.25rem'}"
+                  [text]="true" size="small"
+                ></p-button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </c-col>
+    </c-row>
+  </c-card-body>
+</c-card>
+<app-create-or-edit-user-modal
+  #addOrUpdateUserModal
+  (modalSave)="getAllUsers()"
+></app-create-or-edit-user-modal>
+<p-confirmDialog
+  key="itemDelete"
+  [style]="{ width: '30vw' }"
+  [baseZIndex]="10000"
+  rejectButtonStyleClass="p-button-text"
+></p-confirmDialog>
